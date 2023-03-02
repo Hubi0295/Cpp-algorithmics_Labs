@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+int main() {
+    ZMIENNE WSKAZNIKOWE
+    int *b=new int;//Deklaracja zmiennej wskaźnikowej wraz z przydzieleniem pamięci
+    *b=6;//Przypisanie wartości
+    cout<<"*b:   "<<*b<<endl;//Wyświetlenie wartości która zapisna jest w komórce, której adres przechowywany jest w zmiennej b
+    cout<<"b:   "<< b<<endl;//Wyświetlany jest adres przechowywany w zmiennej b
+    cout<<"&b:  "<<&b<<endl;//Wyświetlany jes adres zmiennej b
+    cout<<"*&b: "<<*&b<<endl;//Wyświetlany jest adres przechowywany z zmiennej b
+    cout<<"&*b: "<<&*b<<endl;//Wyświetlany jest adres przechowywany z zmiennej b
+    delete b;//Zwalnianie pamięci
+
+
+
+        cout<<"TABLICA JEDNOWYMIAROWA Statyczna"<<endl;
+    int x;
+    cout<<"Podaj wielkosc tablicy jednowymiarowej"<<endl;
+    cin>>x;
+    int tab1[x];
+    for(int i=0;i<x;i++){
+        cout<<"Podaj dane: ";
+        cin>>tab1[i];
+    }
+    for(int i=0;i<x;i++){
+        cout<<tab1[i]<<endl;
+    }
+
+        cout<<"TABLICA DWUWYMIAROWA Statyczna"<<endl;
+    int w,k;
+    cout<<"Podaj liczbe wierszy:"<<endl;
+    cin>>w;
+    cout<<"Podaj liczbe kolumn"<<endl;
+    cin>>k;
+    int tab2[w][k];
+    for(int i=0;i<w;i++){
+        for(int j=0;j<k;j++){
+            cout<<"Podaj dane: ";
+            cin>>tab2[i][j];
+        }
+    }
+    for(int i=0;i<w;i++){
+        for(int j=0;j<k;j++){
+            cout<<tab2[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+
+
+
+        cout<<"TABLICA JEDNOWYMIAROWA dynamiczna"<<endl;
+    int x;
+    cout<<"Podaj wielkosc tablicy jednowymiarowej"<<endl;
+    cin>>x;
+    int *tab1=new int[x];
+    tab1[0]=1;
+    tab1[1]=2;
+    tab1[2]=3;
+    for(int i=0;i<x;i++){
+        cout<<"Podaj dane: ";
+        cin>>tab1[i];
+    }
+    for(int i=0;i<x;i++){
+        cout<<tab1[i]<<endl;
+    }
+
+
+    cout<<"TABLICA DWUWYMIAROWA dynamiczna"<<endl;
+    int w,k;
+    cout<<"Podaj liczbe wierszy:";
+    cin>>w;
+    cout<<"Podaj liczbe kolumn";
+    cin>>k;
+    int **tab2=new int*[w];
+    for(int i=0;i<2;i++){
+      tab2[i]=new int[k];}
+
+    for(int i=0;i<w;i++){
+         for(int j=0;j<k;j++){
+             cout<<"Podaj dane: ";
+             cin>>tab2[i][j];
+         }
+    }
+    for(int i=0;i<w;i++){
+        for(int j=0;j<k;j++){
+            cout<<tab2[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+    for(int i=0;i<2;i++){//Zwalnianie pamięci
+        delete [] tab2[i];
+    }
+    delete []tab2;
+    delete []tab1;
+
+    return 0;
+}
