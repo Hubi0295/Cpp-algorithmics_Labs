@@ -8,27 +8,74 @@ void usunTablice1D(int *&tab);
 void usunTablice2D(int **&tab, int w);
 void wyswietl1D(int* tab, int n);
 void wyswietl2D(int** tab, int w, int k);
+void minimalna(int *&tab, int n);
+void zliczanie(int *&tab, int n, int a, int b);
+void maksymalny(int **tab, int w, int k);
 int main() {
-    cout<<"Jaka wielkosc tablicy 1D? :";
-    int n, *tab;
-    cin>>n;
-    przydzielPamiec1D(tab,n);
-    wypelnijTablice1D(tab,n,0,10);
-    wyswietl1D(tab,n);
-
-    cout<<"Ile wierszy tablicy 2D?: ";
-    int w,k, **tab2;
-    cin>>w;
-    cout<<"Ile kolumn tablicy 2D?: ";
-    cin>>k;
-    przydzielPamiec2D(tab2,w,k);
-    wypelnijTablice2D(tab2,w,k,0,10);
-    wyswietl2D(tab2,w,k);
-
-    usunTablice1D(tab);
-    usunTablice2D(tab2,w);
+    int wybor=0;
+    cout<<"Podaj jaka aplikacje chcesz wybrać"<<endl;
+    cout<<"1-Minimalny element"<<endl;
+    cout<<"2-Zliczanie elementow w tablicy"<<endl;
+    cout<<"3-Maksymalny element"<<endl;
+    cout<<"4-Wyjscie z programu"<<endl;
+    cout<<"Wybor: ";
+    cin>>wybor;
+    while(wybor!=4){
+        if(wybor==1){
+                    int a,b,n, *tablica;
+                    cout<<"Podaj rozmiar tablicy jednowymiarowej: ";
+                    cin>>n;
+                    cout<<"Podaj poczatek przedzialu losowania: ";
+                    cin>>a;
+                    cout<<"Podaj koniec przedzialu losowania: ";
+                    cin>>b;
+                    przydzielPamiec1D(tablica,n);
+                    wypelnijTablice1D(tablica,n,a,b);
+                    wyswietl1D(tablica,n);
+                    minimalna(tablica,n);
+        }
+        else if(wybor ==2){
+                    int a,b,n, *tablica;
+                    cout<<"Podaj rozmiar tablicy jednowymiarowej: ";
+                    cin>>n;
+                    cout<<"Podaj poczatek przedzialu losowania: ";
+                    cin>>a;
+                    cout<<"Podaj koniec przedzialu losowania: ";
+                    cin>>b;
+                    przydzielPamiec1D(tablica,n);
+                    wypelnijTablice1D(tablica,n,a,b);
+                    zliczanie(tablica,n,a,b);
+        }
+        else if(wybor==3){
+                    int w,k,**tab,a,b;
+                    cout<<"Podaj ile chcesz wierszy: ";
+                    cin>>w;
+                    cout<<"Podaj liczbe kolumn: ";
+                    cin>>k;
+                    cout<<"Podaj poczatek przedzialu: ";
+                    cin>>a;
+                    cout<<"Podaj koniec przedzialui: ";
+                    cin>>b;
+                    przydzielPamiec2D(tab,w,k);
+                    wypelnijTablice2D(tab,w,k,a,b);
+                    wyswietl2D(tab,w,k);
+                    maksymalny(tab,w,k);
+        }
+        else{
+            cout<<"Złe Dane!";
+        }
+        cout<<"Podaj jaka aplikacje chcesz wybrać"<<endl;
+        cout<<"1-Minimalny element"<<endl;
+        cout<<"2-Zliczanie elementow w tablicy"<<endl;
+        cout<<"3-Maksymalny element"<<endl;
+        cout<<"4-Wyjscie z programu"<<endl;
+        cout<<"Wybor: ";
+        cin>>wybor;
+    }
+    cout<<"Dziekujemy za skorzystanie z naszej usługi :)"<<endl;
     return 0;
 }
+
 void przydzielPamiec1D(int *&tab, int n){
     tab=new int[n];
 }
@@ -72,4 +119,60 @@ void usunTablice2D(int **&tab, int w){
         delete [] tab[i];
     }
     delete []tab;
+}
+void minimalna(int *&tab, int n){
+    int min = tab[0];
+    for(int i=0; i<n;i++){
+        if(tab[i]<min){
+            min = tab[i];
+        }
+    }
+    int flaga = 0;
+    cout<<"Minimalna: "<<min<<endl;
+    for(int i=2;i<n;i++){
+        if(tab[i]%i==0){
+            flaga = 1;
+            break;
+        }
+    }
+    if(flaga){
+        cout<<"Liczba nie jest pierwsza"<<endl;
+    }
+    else{
+        cout<<"Liczba jest pierwsza"<<endl;
+    }
+}
+void zliczanie(int *&tab, int n, int a, int b){
+    int *nowa1;
+    int ile = abs(b-a)+1;
+    przydzielPamiec1D(nowa1,ile);
+    for(int i=0;i<ile;i++){
+        nowa1[i]=0;
+    }
+    cout<<endl;
+    for(int i=0;i<n;i++){
+        int indeks = tab[i]-a;
+        nowa1[indeks]++;
+    }
+    wyswietl1D(tab,n);
+    for(int i=a;i<ile+a;i++){
+        cout<<"Liczba: "<<i<<" Wyswietlila sie tyle razy: "<<nowa1[i-a]<<endl;
+    }
+}
+void maksymalny(int **tab,int w,int k){
+    int maks=tab[0][0];
+    for(int i=0; i<w;i++){
+        for(int j=0;j<k;j++){
+            if (tab[i][j]>maks){
+                maks=tab[i][j];
+            }
+        }
+    }
+    int suma=0, kopia=maks;
+    while(kopia!=0){
+        suma+=kopia%10;
+        kopia/=10;
+    }
+    cout<<"Maks: "<<maks;
+    cout<<"Suma cyfr: "<<suma;
 }
