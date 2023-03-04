@@ -1,0 +1,20 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main() {
+    int d=3, e=5;
+    vector <int> v{2, 3, 7, 14, 23};
+    for_each(v.begin(), v.end(),[d,&e](int x){//[parametry z zewnąrz, jeśli chcemy wszystkie wraz z możlwiością ich zmiany- &, 
+                                             //jeśli nie chcemy pozwolić na zmiane ich wartości- =]
+                                            // (parametery przekazane do funkcji){ciało funkcji};
+        if(x%d==0)
+            cout<<x<<" is divisible by "<<d<<endl;
+        else
+            cout<<x<<" is not divisible by "<<d<<endl;
+        //d=10 Nie można tak zrobić
+        e=10;//Tak już można
+        cout<<"e: "<<e<<endl;
+    });
+    cout<<"e: "<<e;//Zmiana w funkcji lamba zmienia faktyczną wartość zmiennej
+}
