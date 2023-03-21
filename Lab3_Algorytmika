@@ -29,6 +29,7 @@ void quickSort(int *tablica, int lewy,int prawy, int tryb){
         quickSort(tablica,lewy,granica-1,tryb);
     }
     if(granica+1<prawy){
+    
         quickSort(tablica,granica+1,prawy,tryb);
     }
 }
