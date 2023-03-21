@@ -214,4 +214,5 @@ void usunTablice2D(int **&tab, int w){
         delete [] tab[i];
     }
     delete []tab;
+    
 }
