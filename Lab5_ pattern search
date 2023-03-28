@@ -1,0 +1,120 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+void wprowadzdane(string *tekst, string *wzorzec);
+int *algorytmnaiwny(string tekst, string wzorzec);
+int *algorytmKMP(string tekst, string wzorzec);
+void zbudujTabliceDopasowan(string wzorzec, int *p);
+int main() {
+    string *w_tekst, *w_wzorzec, tekst, wzorzec;
+    w_tekst=&tekst;
+    w_wzorzec=&wzorzec;
+    int wybor=5;
+    while(wybor!=0 ){
+        cout<<"Wcisnij 1- jesli chcesz wprowadzic tekst oraz wzorzec"<<endl;
+        cout<<"Wcisnij 2- jesli chcesz wykonac algorytm naiwny"<<endl;
+        cout<<"Wcisnij 3- jesli chcesz wykonac algorytm Knutha-Morrisa-Pratta"<<endl;
+        cout<<"Wcisnij 4- jesli chcesz wykonac algorytm Boyer'a Moore'a"<<endl;
+        cout<<"Wcisnij 0- jesli chcesz wyjsc z aplikacji"<<endl;
+        cout<<"Wybor: ";
+        cin.sync();
+        cin>>wybor;
+        if(wybor>4 || wybor<0){
+        cout<<"Bledne dane!"<<endl;
+        }
+        if(wybor==1){
+            wprowadzdane(w_tekst, w_wzorzec);
+        }
+        if(wybor==2){
+            int *ind = algorytmnaiwny(tekst,wzorzec);
+            int k=0;
+            while(k<tekst.length() && ((ind[k]!=0)||(k==0 && ind[k]==0))){
+                cout<<"indeks: "<<ind[k]<<endl;
+                k++;
+            }
+        }
+        if(wybor==3){
+            int *ind = algorytmKMP(tekst,wzorzec);
+            int k=0;
+            while(k<tekst.length() && ((ind[k]!=0)||(k==0 && ind[k]==0))){
+                cout<<"indeks: "<<ind[k]<<endl;
+                k++;
+            }
+        }
+    }
+    return 0;
+}
+void wprowadzdane(string *tekst, string *wzorzec){
+    cout<<"Podaj tekst: ";
+    cin>>*tekst;
+    cout<<endl;
+    cout<<"Podaj wzorzec: ";
+    cin>>*wzorzec;
+}
+int *algorytmnaiwny(string tekst, string wzorzec){
+    int *indeksy = new int[tekst.length()];
+    int k=0;
+    while(k<tekst.length()){
+        indeksy[k]=0;
+        k++;
+    }
+    int i=0, l=0;
+    while(i<=(tekst.length()-wzorzec.length())){
+        int j=0;
+        while(j<wzorzec.length() && wzorzec[j]==tekst[i+j]){
+            j++;
+        }
+        if(j==wzorzec.length()){
+            indeksy[l]=i;
+            l++;
+        }
+        i++;
+    }
+    return indeksy;
+}
+int *algorytmKMP(string tekst, string wzorzec) {
+    int *p = new int[wzorzec.length()];
+    zbudujTabliceDopasowan(wzorzec, p);
+    int *indeksy = new int[tekst.length()];
+    int k=0;
+    while(k<tekst.length()){
+        indeksy[k]=0;
+        k++;
+    }
+    int l;
+    int i = 0;
+    while (i < wzorzec.length()) {
+        i++;
+    }
+    i = 0;
+    int j = 0;
+    while (i < tekst.length() - wzorzec.length() + 1) {
+    while(wzorzec[j]==tekst[i+j]&&j<wzorzec.length()){
+        j++;
+    }
+    if(j==wzorzec.length()){
+        indeksy[l]=i;
+        l++;
+    }
+    i+=max(1,j-p[j]);
+    j=p[j];
+    }
+
+    return indeksy;
+}
+void zbudujTabliceDopasowan(string wzorzec, int *p){
+    p[0]=0;
+    p[1]=0;
+    int t=0;
+    int i=1;
+    while(i<wzorzec.length()){
+        while(t>0 && wzorzec[t]!=wzorzec[i]){
+            t=p[t];
+        }
+        if(wzorzec[t]==wzorzec[i]){
+            t++;
+        }
+        p[i+1]=t;
+        i++;
+    }
+}
