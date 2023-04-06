@@ -1,10 +1,13 @@
 #include <iostream>
 #include <algorithm>
+#include <string>
 using namespace std;
 void wprowadzdane(string *tekst, string *wzorzec);
-int *algorytmnaiwny(string tekst, string wzorzec);
-int *algorytmKMP(string tekst, string wzorzec);
+void algorytmnaiwny(string tekst, string wzorzec);
+void algorytmKMP(string tekst, string wzorzec);
 void zbudujTabliceDopasowan(string wzorzec, int *p);
+void tablicaPrzesuniec(string wzorzec, int *p, int pocz, int kon);
+void algorytmBM(string wzorzec, string tekst, int *p, int pocz);
 int main() {
     string *w_tekst, *w_wzorzec, tekst, wzorzec;
     w_tekst=&tekst;
@@ -20,44 +23,34 @@ int main() {
         cin.sync();
         cin>>wybor;
         if(wybor>4 || wybor<0){
-        cout<<"Bledne dane!"<<endl;
+            cout<<"Bledne dane!"<<endl;
         }
         if(wybor==1){
             wprowadzdane(w_tekst, w_wzorzec);
         }
         if(wybor==2){
-            int *ind = algorytmnaiwny(tekst,wzorzec);
-            int k=0;
-            while(k<tekst.length() && ((ind[k]!=0)||(k==0 && ind[k]==0))){
-                cout<<"indeks: "<<ind[k]<<endl;
-                k++;
-            }
+            algorytmnaiwny(tekst,wzorzec);
         }
         if(wybor==3){
-            int *ind = algorytmKMP(tekst,wzorzec);
-            int k=0;
-            while(k<tekst.length() && ((ind[k]!=0)||(k==0 && ind[k]==0))){
-                cout<<"indeks: "<<ind[k]<<endl;
-                k++;
-            }
+            algorytmKMP(tekst,wzorzec);
+        }
+        if(wybor==4){
+            int *p= new int[255];
+            algorytmBM(wzorzec,tekst,p,0);
         }
     }
     return 0;
 }
 void wprowadzdane(string *tekst, string *wzorzec){
     cout<<"Podaj tekst: ";
-    cin>>*tekst;
+    fflush(stdin);
+    getline(cin,*tekst);
     cout<<endl;
+    fflush(stdin);
     cout<<"Podaj wzorzec: ";
-    cin>>*wzorzec;
+    getline(cin,*wzorzec);
 }
-int *algorytmnaiwny(string tekst, string wzorzec){
-    int *indeksy = new int[tekst.length()];
-    int k=0;
-    while(k<tekst.length()){
-        indeksy[k]=0;
-        k++;
-    }
+void algorytmnaiwny(string tekst, string wzorzec){
     int i=0, l=0;
     while(i<=(tekst.length()-wzorzec.length())){
         int j=0;
@@ -65,23 +58,15 @@ int *algorytmnaiwny(string tekst, string wzorzec){
             j++;
         }
         if(j==wzorzec.length()){
-            indeksy[l]=i;
-            l++;
+            cout<<"Indeks: "<<i<<endl;
         }
         i++;
     }
-    return indeksy;
 }
-int *algorytmKMP(string tekst, string wzorzec) {
+void algorytmKMP(string tekst, string wzorzec) {
     int *p = new int[wzorzec.length()];
     zbudujTabliceDopasowan(wzorzec, p);
-    int *indeksy = new int[tekst.length()];
-    int k=0;
-    while(k<tekst.length()){
-        indeksy[k]=0;
-        k++;
-    }
-    int l;
+    int l=0;
     int i = 0;
     while (i < wzorzec.length()) {
         i++;
@@ -89,18 +74,15 @@ int *algorytmKMP(string tekst, string wzorzec) {
     i = 0;
     int j = 0;
     while (i < tekst.length() - wzorzec.length() + 1) {
-    while(wzorzec[j]==tekst[i+j]&&j<wzorzec.length()){
-        j++;
+        while(wzorzec[j]==tekst[i+j]&&j<wzorzec.length()){
+            j++;
+        }
+        if(j==wzorzec.length()){
+            cout<<"Indeks: "<<i<<endl;
+        }
+        i+=max(1,j-p[j]);
+        j=p[j];
     }
-    if(j==wzorzec.length()){
-        indeksy[l]=i;
-        l++;
-    }
-    i+=max(1,j-p[j]);
-    j=p[j];
-    }
-
-    return indeksy;
 }
 void zbudujTabliceDopasowan(string wzorzec, int *p){
     p[0]=0;
@@ -115,6 +97,38 @@ void zbudujTabliceDopasowan(string wzorzec, int *p){
             t++;
         }
         p[i+1]=t;
+        i++;
+    }
+}
+void algorytmBM(string wzorzec, string tekst, int *p, int pocz){
+    tablicaPrzesuniec(wzorzec,p,0,255);
+    int n_pocz=(int)pocz;
+    int i=0;
+    while(i<=tekst.length()-wzorzec.length()){
+        int j=wzorzec.length()-1;
+        while(j>-1 && wzorzec[j]==tekst[i+j]){
+            j--;
+        }
+        if(j==-1){
+            cout<<"Indeks: "<<i<<endl;
+            i++;
+        }
+        else{
+            i=i+max(1,j-p[tekst[i+j]-n_pocz]);
+        }
+    }
+}
+void tablicaPrzesuniec(string wzorzec, int *p, int pocz, int kon){
+    int n_pocz = (int)pocz;
+    int n_kon = (int)kon;
+    int i=0;
+    while(i<=n_kon-n_pocz){
+        p[i]=-1;
+        i++;
+    }
+    i=0;
+    while(i<wzorzec.length()){
+        p[wzorzec[i]-n_pocz]=i;
         i++;
     }
 }
