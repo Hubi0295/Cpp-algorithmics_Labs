@@ -26,8 +26,8 @@ int main() {
         cin>>wybor;
         switch (wybor) {
             case 1: WczytywanieDanych(tab);
-                    quickSortDlaStruktur(tab,0,14,1);
-                    cout<<tab[0].imie;break;
+                quickSortDlaStruktur(tab,0,14,1);
+                cout<<tab[0].imie;break;
             case 2:
                 cout<<"Podaj wartosc ktora szukasz: ";
                 cin>>wartosc;
@@ -59,12 +59,16 @@ void WyszukiwanieLinniowe(Studenci *student, int szukanawartosc){
 }
 void WyszukiwanieBinarne(Studenci *student, int szukanawartosc){
     int lewy=0;
-    int prawy=14-1;
+    ofstream zapis;
+    string sciezkaDoZapisu="wyniki.csv";
+    zapis.open(sciezkaDoZapisu);
+    int prawy=14;
     bool znaleziono= false;
     while(lewy<=prawy){
         int srodek=(int)(lewy+prawy)/2;
         if(student[srodek].punkty==szukanawartosc){
             cout<<student[srodek].imie<<" "<<student[srodek].nazwisko<<" "<<student[srodek].punkty<<endl;
+            zapis << student[srodek].imie << ";" << student[srodek].nazwisko << ";"<< student[srodek].punkty<<";"<<" "<<";";
             znaleziono= true;
             student[srodek].punkty=-1;
             continue;
@@ -84,6 +88,7 @@ void WyszukiwanieBinarne(Studenci *student, int szukanawartosc){
     if(!znaleziono){
         cout<<"Nie znaleziono zadnego studenta z iloscia punktow rowna: "<<szukanawartosc<<endl;
     }
+    zapis.close();
 }
 void WczytywanieDanych(Studenci *student){
     string sciezka,linia,pomoc;
