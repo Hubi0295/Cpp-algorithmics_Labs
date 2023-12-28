@@ -69,7 +69,7 @@ int main() {
             cout<<"Niepoprawne dane"<<endl;
         }
 
-        cout<<"Z ktorego sortowania chcesz skorzystac, "<<endl<<"1-babelkowe"<<endl<<" 2-przez wybor"<<endl<<" 3-wstawianie"<<endl<<" 4-tablica2D babelkowe"<<endl<<" jezeli chcesz wyjsc wcisnij 0: ";
+        cout<<"Z ktorego sortowania chcesz skorzystac, "<<endl<<" 1-babelkowe"<<endl<<" 2-przez wybor"<<endl<<" 3-wstawianie"<<endl<<" 4-tablica2D babelkowe"<<endl<<" jezeli chcesz wyjsc wcisnij 0: ";
         cin>>wybor;
         if(wybor==0){
             break;
