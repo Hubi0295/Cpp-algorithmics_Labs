@@ -165,6 +165,7 @@ void wyswietlStudentow(student*tab,int n){
         cout<<endl;
     }
 }
+
 void dwupodzial(student*tab,int n,int granica, int *koniec){
     int i=0;
     int j =n-1;
