@@ -131,4 +131,5 @@ void tablicaPrzesuniec(string wzorzec, int *p, int pocz, int kon){
         p[wzorzec[i]-n_pocz]=i;
         i++;
     }
+    
 }
